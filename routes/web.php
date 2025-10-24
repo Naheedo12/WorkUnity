@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EmployeeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,18 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-Route::get('/details', function () {
-    return view('details');
-});
-Route::get('/ajouter', function () {
-    return view('ajouter');
-})->name("Ajouter");
-Route::get('/supprimer', function () {
-    return view('supprimer');
-});
-Route::get('/modifier', function () {
-    return view('modifier');
-});
+Route::get('/', [EmployeeController::class, 'index'])->name('Home');
+
+Route::get('/details/{employee}', [EmployeeController::class, 'show'])->name('Details');
+
+Route::get('/ajouter', [EmployeeController::class, 'create'])->name('Ajouter');
+Route::post('/ajouter', [EmployeeController::class, 'store'])->name('employees.store');
+
+Route::get('/modifier/{employee}', [EmployeeController::class, 'edit'])->name('Modifier');
+Route::put('/modifier/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+
+Route::get('/supprimer/{employee}', [EmployeeController::class, 'destroy'])->name('Supprimer');

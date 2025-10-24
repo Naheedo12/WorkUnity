@@ -2,65 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\employee;
-use App\Http\Requests\StoreemployeeRequest;
-use App\Http\Requests\UpdateemployeeRequest;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $employees = Employee::all();
+        return view('home', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('ajouter');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreemployeeRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required',
+            'prenom' => 'required',
+            'email' => 'required|email|unique:employees',
+            'poste' => 'required',
+        ]);
+
+        Employee::create($request->all());
+
+        return redirect()->route('Home')->with('success', 'Employé ajouté avec succès!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(employee $employee)
+    public function show(Employee $employee)
     {
-        //
+        return view('details', compact('employee'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(employee $employee)
+    public function edit(Employee $employee)
     {
-        //
+        return view('modifier', compact('employee'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateemployeeRequest $request, employee $employee)
+    public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'nom' => 'required',
+            'prenom' => 'required',
+            'email' => 'required|email|unique:employees,email,' . $employee->id,
+            'poste' => 'required',
+        ]);
+
+        $employee->update($request->all());
+
+        return redirect()->route('Home')->with('success', 'Employé modifié avec succès!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(employee $employee)
+    public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+        return redirect()->route('Home')->with('success', 'Employé supprimé avec succès!');
     }
 }
