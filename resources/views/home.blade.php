@@ -58,9 +58,17 @@
                             <a href="{{ route('Modifier', $employee->id) }}"
                                 class="px-4 py-2 rounded-lg text-white font-semibold transition duration-300 hover:shadow-md"
                                 style="background-color: #EDAFB8;">Edit</a>
-                            <a href="{{ route('Supprimer', $employee->id) }}"
-                                class="px-4 py-2 rounded-lg text-white font-semibold transition duration-300 hover:shadow-md"
-                                style="background-color: #4A5759;">Delete</a>
+                                
+                            <form action="{{ route('Supprimer', $employee->id) }}" method="POST"
+                                onsubmit="return confirm('Delete this employee?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="px-4 py-2 rounded-lg text-white font-semibold hover:shadow-md"
+                                    style="background-color: #4A5759;">
+                                    Delete
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

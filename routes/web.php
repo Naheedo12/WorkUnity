@@ -23,4 +23,4 @@ Route::post('/ajouter', [EmployeeController::class, 'store'])->name('employees.s
 Route::get('/modifier/{employee}', [EmployeeController::class, 'edit'])->name('Modifier');
 Route::put('/modifier/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
 
-Route::get('/supprimer/{employee}', [EmployeeController::class, 'destroy'])->name('Supprimer');
+Route::delete('/supprimer/{employee}', [EmployeeController::class, 'destroy'])->name('Supprimer');
